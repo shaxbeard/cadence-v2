@@ -30,6 +30,10 @@ class App extends Component {
     return hashParams;
   }
 
+  fetchUserPlaylists() {
+    spotifyWebApi.getUserPlaylists().then(response => {});
+  }
+
   getNowPlaying() {
     spotifyWebApi.getMyCurrentPlaybackState().then(response => {
       this.setState({
@@ -51,7 +55,9 @@ class App extends Component {
         <div>
           <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
         </div>
-        <button onClick={() => this.getNowPlaying()}>Check Now Playing</button>
+        <button onClick={() => this.fetchUserPlaylists()}>
+          Check Now Playing
+        </button>
       </div>
     );
   }
