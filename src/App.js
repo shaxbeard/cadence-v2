@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Spotify from "spotify-web-api-js";
+import PlaylistList from "./PlaylistList";
 
 const spotifyWebApi = new Spotify();
 
@@ -10,6 +11,7 @@ class App extends Component {
     const params = this.getHashParams();
     this.state = {
       loggedIn: params.access_token ? true : false,
+      userPlaylists: null,
       nowPlaying: {
         name: "Not Checked",
         image: ""
@@ -19,6 +21,15 @@ class App extends Component {
       spotifyWebApi.setAccessToken(params.access_token);
     }
   }
+
+  fetchUserPlaylists() {
+    spotifyWebApi.getUserPlaylists().then(response => {
+      this.setState({
+        userPlaylists: response.items
+      });
+    });
+  }
+
   getHashParams() {
     var hashParams = {};
     var e,
@@ -28,10 +39,6 @@ class App extends Component {
       hashParams[e[1]] = decodeURIComponent(e[2]);
     }
     return hashParams;
-  }
-
-  fetchUserPlaylists() {
-    spotifyWebApi.getUserPlaylists().then(response => {});
   }
 
   getNowPlaying() {
@@ -58,6 +65,7 @@ class App extends Component {
         <button onClick={() => this.fetchUserPlaylists()}>
           Check Now Playing
         </button>
+        <PlaylistList userPlaylists={this.state.userPlaylists} />
       </div>
     );
   }
