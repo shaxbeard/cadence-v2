@@ -11,7 +11,7 @@ class App extends Component {
     const params = this.getHashParams();
     this.state = {
       loggedIn: params.access_token ? true : false,
-      userPlaylists: null,
+      userPlaylists: [],
       nowPlaying: {
         name: "Not Checked",
         image: ""
