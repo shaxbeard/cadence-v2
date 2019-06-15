@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       loggedIn: params.access_token ? true : false,
       userPlaylists: [],
+      selectedPlaylist: null,
       nowPlaying: {
         name: "Not Checked",
         image: ""
@@ -29,6 +30,10 @@ class App extends Component {
       });
     });
   }
+
+  onPlaylistSelect = playlist => {
+    console.log(playlist);
+  };
 
   getHashParams() {
     var hashParams = {};
@@ -65,7 +70,10 @@ class App extends Component {
         <button onClick={() => this.fetchUserPlaylists()}>
           Check Now Playing
         </button>
-        <PlaylistList userPlaylists={this.state.userPlaylists} />
+        <PlaylistList
+          onPlaylistSelect={this.onPlaylistSelect}
+          userPlaylists={this.state.userPlaylists}
+        />
       </div>
     );
   }

@@ -1,11 +1,15 @@
 import React from "react";
+import PlaylistItem from "./PlaylistItem";
 
-const PlaylistList = props => {
-  const userPlaylists = props.userPlaylists.map(playlist => {
-    return <p>{playlist.name}</p>;
+const PlaylistList = ({ userPlaylists, onPlaylistSelect }) => {
+  const renderedList = userPlaylists.map(playlist => {
+    // return <p>{playlist.name}</p>;
+    return (
+      <PlaylistItem onPlaylistSelect={onPlaylistSelect} playlist={playlist} />
+    );
   });
 
-  return <div>{userPlaylists}</div>;
+  return <div>{renderedList}</div>;
 };
 
 export default PlaylistList;
