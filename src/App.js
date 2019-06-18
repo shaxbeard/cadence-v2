@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Spotify from "spotify-web-api-js";
 import PlaylistList from "./PlaylistList";
+import PlaylistDetail from "./PlaylistDetail";
 
 const spotifyWebApi = new Spotify();
 
@@ -12,6 +13,8 @@ class App extends Component {
     this.state = {
       loggedIn: params.access_token ? true : false,
       userPlaylists: [],
+      playlistId: null,
+      playlistTracks: [],
       selectedPlaylist: null,
       nowPlaying: {
         name: "Not Checked",
@@ -32,7 +35,8 @@ class App extends Component {
   }
 
   onPlaylistSelect = playlist => {
-    console.log(playlist);
+    // this.setState({ selectedPlaylist: playlist });
+    this.setState({ playlistId: playlist.id }, () => this.getNowPlaying());
   };
 
   getHashParams() {
@@ -68,8 +72,10 @@ class App extends Component {
           <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
         </div>
         <button onClick={() => this.fetchUserPlaylists()}>
-          Check Now Playing
+          Fetch User Playlists
         </button>
+        <button onClick={() => this.getNowPlaying()}>Check Now Playing</button>
+        <PlaylistDetail playlist={this.state.playlistId} />
         <PlaylistList
           onPlaylistSelect={this.onPlaylistSelect}
           userPlaylists={this.state.userPlaylists}
