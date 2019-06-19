@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import Spotify from "spotify-web-api-js";
+import axios from "axios";
+
 import PlaylistList from "./PlaylistList";
 import PlaylistDetail from "./PlaylistDetail";
 
@@ -10,7 +12,20 @@ class App extends Component {
   constructor() {
     super();
     const params = this.getHashParams();
+
+    // axios
+    //   .get(
+    //     "https://api.spotify.com/v1/playlists/0UeDsSYClhiopusVz5tZxJ/tracks",
+    //     {
+    //       headers: {
+    //         Authorization: "Bearer " + params.access_token
+    //       }
+    //     }
+    //   )
+    //   .then(response => console.log(response));
+
     this.state = {
+      paramsST: params.access_token,
       loggedIn: params.access_token ? true : false,
       userPlaylists: [],
       playlistId: null,
@@ -34,10 +49,35 @@ class App extends Component {
     });
   }
 
+  // fetchPlaylistTracks() {
+  //   spotifyWebApi
+  //     .getPlaylistTracks("5CSMKjNM04NwooUWWTrFKc")
+  //     .then(response => console.log(response));
+  // }
+
   onPlaylistSelect = playlist => {
     // this.setState({ selectedPlaylist: playlist });
-    this.setState({ playlistId: playlist.id }, () => this.getNowPlaying());
+    this.setState({ playlistId: playlist.id });
   };
+
+  //This is the onPlaylistSelect function with a sample callback
+  // onPlaylistSelect = playlist => {
+  //   // this.setState({ selectedPlaylist: playlist });
+  //   this.setState({ playlistId: playlist.id }, () => this.getNowPlaying());
+  // };
+
+  // fetchPlaylistTracks() {
+  //   axios
+  //     .get(
+  //       "https://api.spotify.com/v1/playlists/0UeDsSYClhiopusVz5tZxJ/tracks",
+  //       {
+  //         headers: {
+  //           Authorization: "Bearer " + params.access_token
+  //         }
+  //       }
+  //     )
+  //     .then(response => console.log(response));
+  // }
 
   getHashParams() {
     var hashParams = {};
@@ -74,12 +114,15 @@ class App extends Component {
         <button onClick={() => this.fetchUserPlaylists()}>
           Fetch User Playlists
         </button>
-        <button onClick={() => this.getNowPlaying()}>Check Now Playing</button>
+        <button onClick={() => this.fetchPlaylistTracks()}>
+          Fetch Playlist Tracks
+        </button>
         <PlaylistDetail playlist={this.state.playlistId} />
         <PlaylistList
           onPlaylistSelect={this.onPlaylistSelect}
           userPlaylists={this.state.userPlaylists}
         />
+        <div>Access Token: {this.state.paramsST}</div>
       </div>
     );
   }
