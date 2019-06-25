@@ -5,6 +5,7 @@ import axios from "axios";
 
 import PlaylistList from "./PlaylistList";
 import PlaylistDetail from "./PlaylistDetail";
+import PlaylistTrackList from "./PlaylistTrackList";
 
 const spotifyWebApi = new Spotify();
 
@@ -12,17 +13,6 @@ class App extends Component {
   constructor() {
     super();
     const params = this.getHashParams();
-
-    // axios
-    //   .get(
-    //     "https://api.spotify.com/v1/playlists/0UeDsSYClhiopusVz5tZxJ/tracks",
-    //     {
-    //       headers: {
-    //         Authorization: "Bearer " + params.access_token
-    //       }
-    //     }
-    //   )
-    //   .then(response => console.log(response));
 
     this.state = {
       paramsST: params.access_token,
@@ -39,6 +29,20 @@ class App extends Component {
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
     }
+    axios
+      .get(
+        "https://api.spotify.com/v1/playlists/0UeDsSYClhiopusVz5tZxJ/tracks",
+        {
+          headers: {
+            Authorization: "Bearer " + params.access_token
+          }
+        }
+      )
+      .then(response => {
+        this.setState({
+          playlistTracks: response.data.items
+        });
+      });
   }
 
   fetchUserPlaylists() {
@@ -48,12 +52,6 @@ class App extends Component {
       });
     });
   }
-
-  // fetchPlaylistTracks() {
-  //   spotifyWebApi
-  //     .getPlaylistTracks("5CSMKjNM04NwooUWWTrFKc")
-  //     .then(response => console.log(response));
-  // }
 
   onPlaylistSelect = playlist => {
     // this.setState({ selectedPlaylist: playlist });
@@ -122,7 +120,9 @@ class App extends Component {
           onPlaylistSelect={this.onPlaylistSelect}
           userPlaylists={this.state.userPlaylists}
         />
-        <div>Access Token: {this.state.paramsST}</div>
+
+        <div>token: {this.state.paramsST}</div>
+        <div>found: {this.state.playlistTracks.length} tracks</div>
       </div>
     );
   }
