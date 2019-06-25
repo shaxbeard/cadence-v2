@@ -29,6 +29,7 @@ class App extends Component {
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
     }
+
     axios
       .get(
         "https://api.spotify.com/v1/playlists/0UeDsSYClhiopusVz5tZxJ/tracks",
@@ -120,6 +121,7 @@ class App extends Component {
           onPlaylistSelect={this.onPlaylistSelect}
           userPlaylists={this.state.userPlaylists}
         />
+        <PlaylistTrackList playlistTracks={this.state.playlistTracks} />
 
         <div>token: {this.state.paramsST}</div>
         <div>found: {this.state.playlistTracks.length} tracks</div>
